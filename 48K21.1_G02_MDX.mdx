@@ -1,0 +1,50 @@
+﻿//1.Tổng doanh số theo Năm và Nhóm Sản phẩm
+SELECT NONEMPTY([Dim Products].[Category].[Category]) ON ROWS,
+NONEMPTY([Dim Time].[Year].[Year]) ON COLUMNS
+FROM [Sale Bevarage _Cube]
+WHERE [Measures].[Total Price];
+
+//2. Tổng doanh số theo Khu vực và Loại Khách hàng
+SELECT NONEMPTY([Dim Customers].[Customer Type].[Customer Type]) ON COLUMNS,
+NONEMPTY([Dim Region].[Region].[Region]) ON ROWS
+FROM [Sale Bevarage _Cube]
+WHERE [Measures].[Total Price];
+
+//3. Tổng số lượng đơn hàng theo Kênh và Thời gian theo ngày trong tuần
+SELECT NONEMPTY([Dim Customers].[Customer Type].[Customer Type]) ON ROWS,
+NONEMPTY([Dim Time].[Week Day].[Week Day]) ON COLUMNS
+FROM [Sale Bevarage _Cube] 
+WHERE [Measures].[Fact Orders Count];
+
+//4. Tổng số lượng đơn hàng theo từng mặt hàng
+SELECT 
+    NONEMPTY([Dim Products].[Product].[Product]) ON ROWS, 
+    [Measures].[Fact Orders Count] ON COLUMNS 
+FROM [Sale Bevarage _Cube]
+
+
+//5. Mức giảm giá trung bình theo danh mục sản phẩm
+WITH MEMBER [Measures].[Avg Discount] AS  
+    AVG([Dim Products].[Product].MEMBERS, [Measures].[Discount])  
+SELECT 
+    nonempty([Measures].[Avg Discount]) ON COLUMNS,  
+    nonempty([Dim Products].[Category].MEMBERS) ON ROWS  
+FROM [Sale Bevarage _Cube]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
